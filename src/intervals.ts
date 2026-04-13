@@ -33,6 +33,7 @@ export type IntervalName =
   | "aug4"
   | "dim5"
   | "p5"
+  | "min6"
   | "maj6"
   | "min7"
   | "maj7";
@@ -157,6 +158,7 @@ export const intervalSpecs: Record<IntervalName, IntervalSpec> = {
   aug4: { steps: 6, letterSteps: 3 },
   dim5: { steps: 6, letterSteps: 4 },
   p5: { steps: 7, letterSteps: 4 },
+  min6: { steps: 8, letterSteps: 5 },
   maj6: { steps: 9, letterSteps: 5 },
   min7: { steps: 10, letterSteps: 6 },
   maj7: { steps: 11, letterSteps: 6 },
@@ -181,6 +183,24 @@ export function intervalUp(
   const end = {
     semitone: (noteSpecs[start].semitone + intervalSpecs[interval].steps) % 12,
     letter: (noteSpecs[start].letter + intervalSpecs[interval].letterSteps) % 7,
+  };
+  const result = (Object.entries(noteSpecs) as [PitchClass, Note][]).find(
+    ([_, note]) => note.semitone === end.semitone && note.letter === end.letter,
+  );
+  if (!result)
+    throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
+  return result[0];
+}
+
+export function intervalDown(
+  start: PitchClass,
+  interval: IntervalName,
+): PitchClass {
+  const end = {
+    semitone:
+      (noteSpecs[start].semitone - intervalSpecs[interval].steps + 12) % 12,
+    letter:
+      (noteSpecs[start].letter - intervalSpecs[interval].letterSteps + 7) % 7,
   };
   const result = (Object.entries(noteSpecs) as [PitchClass, Note][]).find(
     ([_, note]) => note.semitone === end.semitone && note.letter === end.letter,
