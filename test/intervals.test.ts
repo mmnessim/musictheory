@@ -46,6 +46,8 @@ describe("intervalDown() interval table", () => {
     ["C", "maj6", "Eb"],
     ["C", "min7", "D"],
     ["C", "maj7", "Db"],
+    // Enharmonics
+    ["Ab", "maj3", "Fb"],
   ];
   test.each(cases)("%s - %s = %s", (start, interval, expected) => {
     expect(intervalDown(start, interval)).toBe(expected);

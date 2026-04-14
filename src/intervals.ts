@@ -20,7 +20,14 @@ export type PitchClass =
   | "A#"
   | "Bb"
   | "B"
-  | "B#";
+  | "B#"
+  | "Cbb"
+  | "Dbb"
+  | "Ebb"
+  | "Fbb"
+  | "Gbb"
+  | "Abb"
+  | "Bbb";
 
 /** All standard interval names excluding most augmented and diminished intervals */
 export type IntervalName =
@@ -35,6 +42,7 @@ export type IntervalName =
   | "p5"
   | "min6"
   | "maj6"
+  | "dim7"
   | "min7"
   | "maj7";
 
@@ -143,6 +151,34 @@ export const noteSpecs: Record<PitchClass, Note> = {
     semitone: 0,
     letter: 6,
   },
+  Cbb: {
+    semitone: 10,
+    letter: 0,
+  },
+  Dbb: {
+    semitone: 0,
+    letter: 1,
+  },
+  Ebb: {
+    semitone: 2,
+    letter: 2,
+  },
+  Fbb: {
+    semitone: 3,
+    letter: 3,
+  },
+  Gbb: {
+    semitone: 5,
+    letter: 4,
+  },
+  Abb: {
+    semitone: 7,
+    letter: 5,
+  },
+  Bbb: {
+    semitone: 9,
+    letter: 6,
+  },
 };
 
 /**
@@ -160,6 +196,7 @@ export const intervalSpecs: Record<IntervalName, IntervalSpec> = {
   p5: { steps: 7, letterSteps: 4 },
   min6: { steps: 8, letterSteps: 5 },
   maj6: { steps: 9, letterSteps: 5 },
+  dim7: { steps: 9, letterSteps: 6 },
   min7: { steps: 10, letterSteps: 6 },
   maj7: { steps: 11, letterSteps: 6 },
 };
