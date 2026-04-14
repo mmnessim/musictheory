@@ -21,13 +21,22 @@ export type PitchClass =
   | "Bb"
   | "B"
   | "B#"
+  // Double flats
   | "Cbb"
   | "Dbb"
   | "Ebb"
   | "Fbb"
   | "Gbb"
   | "Abb"
-  | "Bbb";
+  | "Bbb"
+  // Double sharps
+  | "Cx"
+  | "Dx"
+  | "Ex"
+  | "Fx"
+  | "Gx"
+  | "Ax"
+  | "Bx";
 
 /** All standard interval names excluding most augmented and diminished intervals */
 export type IntervalName =
@@ -179,7 +188,42 @@ export const noteSpecs: Record<PitchClass, Note> = {
     semitone: 9,
     letter: 6,
   },
+  Cx: {
+    semitone: 2,
+    letter: 0,
+  },
+  Dx: {
+    semitone: 4,
+    letter: 1,
+  },
+  Ex: {
+    semitone: 6,
+    letter: 2,
+  },
+  Fx: {
+    semitone: 7,
+    letter: 3,
+  },
+  Gx: {
+    semitone: 9,
+    letter: 4,
+  },
+  Ax: {
+    semitone: 11,
+    letter: 5,
+  },
+  Bx: {
+    semitone: 1,
+    letter: 6,
+  },
 };
+
+export const notesByPosition: Map<string, PitchClass> = new Map(
+  (Object.entries(noteSpecs) as [PitchClass, Note][]).map(([pc, note]) => [
+    `${note.semitone},${note.letter}`,
+    pc,
+  ]),
+);
 
 /**
  * Table of steps and letter steps for each interval
@@ -221,12 +265,10 @@ export function intervalUp(
     semitone: (noteSpecs[start].semitone + intervalSpecs[interval].steps) % 12,
     letter: (noteSpecs[start].letter + intervalSpecs[interval].letterSteps) % 7,
   };
-  const result = (Object.entries(noteSpecs) as [PitchClass, Note][]).find(
-    ([_, note]) => note.semitone === end.semitone && note.letter === end.letter,
-  );
+  const result = notesByPosition.get(`${end.semitone},${end.letter}`);
   if (!result)
     throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
-  return result[0];
+  return result;
 }
 
 export function intervalDown(
@@ -239,10 +281,9 @@ export function intervalDown(
     letter:
       (noteSpecs[start].letter - intervalSpecs[interval].letterSteps + 7) % 7,
   };
-  const result = (Object.entries(noteSpecs) as [PitchClass, Note][]).find(
-    ([_, note]) => note.semitone === end.semitone && note.letter === end.letter,
-  );
+  const result = notesByPosition.get(`${end.semitone},${end.letter}`);
+
   if (!result)
     throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
-  return result[0];
+  return result;
 }

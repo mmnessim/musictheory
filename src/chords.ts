@@ -1,4 +1,4 @@
-import { intervalUp, type IntervalName, type PitchClass } from "./intervals";
+import { intervalUp, type PitchClass } from "./intervals";
 
 export type Chord = {
   chordType: ChordType;
