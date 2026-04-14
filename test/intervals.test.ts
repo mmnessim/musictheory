@@ -20,6 +20,7 @@ describe("intervalUp() interval table", () => {
     ["C", "p5", "G"],
     ["C", "min6", "Ab"],
     ["C", "maj6", "A"],
+    ["C", "dim7", "Bbb"],
     ["C", "min7", "Bb"],
     ["C", "maj7", "B"],
     // C# tonic
@@ -34,6 +35,7 @@ describe("intervalUp() interval table", () => {
     ["C#", "p5", "G#"],
     ["C#", "min6", "A"],
     ["C#", "maj6", "A#"],
+    ["C#", "dim7", "Bb"],
     ["C#", "min7", "B"],
     ["C#", "maj7", "B#"],
     // Db tonic
@@ -48,6 +50,7 @@ describe("intervalUp() interval table", () => {
     ["Db", "p5", "Ab"],
     ["Db", "min6", "Bbb"],
     ["Db", "maj6", "Bb"],
+    ["Db", "dim7", "Cbb"],
     ["Db", "min7", "Cb"],
     ["Db", "maj7", "C"],
     // D tonic
@@ -62,6 +65,7 @@ describe("intervalUp() interval table", () => {
     ["D", "p5", "A"],
     ["D", "min6", "Bb"],
     ["D", "maj6", "B"],
+    ["D", "dim7", "Cb"],
     ["D", "min7", "C"],
     ["D", "maj7", "C#"],
     // D# tonic
@@ -76,6 +80,7 @@ describe("intervalUp() interval table", () => {
     ["D#", "p5", "A#"],
     ["D#", "min6", "B"],
     ["D#", "maj6", "B#"],
+    ["D#", "dim7", "C"],
     ["D#", "min7", "C#"],
     ["D#", "maj7", "Cx"],
     // Eb tonic
@@ -90,6 +95,7 @@ describe("intervalUp() interval table", () => {
     ["Eb", "p5", "Bb"],
     ["Eb", "min6", "Cb"],
     ["Eb", "maj6", "C"],
+    ["Eb", "dim7", "Dbb"],
     ["Eb", "min7", "Db"],
     ["Eb", "maj7", "D"],
     // E tonic
@@ -104,6 +110,7 @@ describe("intervalUp() interval table", () => {
     ["E", "p5", "B"],
     ["E", "min6", "C"],
     ["E", "maj6", "C#"],
+    ["E", "dim7", "Db"],
     ["E", "min7", "D"],
     ["E", "maj7", "D#"],
     // F tonic
@@ -118,6 +125,7 @@ describe("intervalUp() interval table", () => {
     ["F", "p5", "C"],
     ["F", "min6", "Db"],
     ["F", "maj6", "D"],
+    ["F", "dim7", "Ebb"],
     ["F", "min7", "Eb"],
     ["F", "maj7", "E"],
     // F# tonic
@@ -132,6 +140,7 @@ describe("intervalUp() interval table", () => {
     ["F#", "p5", "C#"],
     ["F#", "min6", "D"],
     ["F#", "maj6", "D#"],
+    ["F#", "dim7", "Eb"],
     ["F#", "min7", "E"],
     ["F#", "maj7", "E#"],
     // Gb tonic
@@ -146,6 +155,7 @@ describe("intervalUp() interval table", () => {
     ["Gb", "p5", "Db"],
     ["Gb", "min6", "Ebb"],
     ["Gb", "maj6", "Eb"],
+    ["Gb", "dim7", "Fbb"],
     ["Gb", "min7", "Fb"],
     ["Gb", "maj7", "F"],
     // G tonic
@@ -160,6 +170,7 @@ describe("intervalUp() interval table", () => {
     ["G", "p5", "D"],
     ["G", "min6", "Eb"],
     ["G", "maj6", "E"],
+    ["G", "dim7", "Fb"],
     ["G", "min7", "F"],
     ["G", "maj7", "F#"],
     // G# tonic
@@ -174,6 +185,7 @@ describe("intervalUp() interval table", () => {
     ["G#", "p5", "D#"],
     ["G#", "min6", "E"],
     ["G#", "maj6", "E#"],
+    ["G#", "dim7", "F"],
     ["G#", "min7", "F#"],
     ["G#", "maj7", "Fx"],
     // Ab tonic
@@ -188,6 +200,7 @@ describe("intervalUp() interval table", () => {
     ["Ab", "p5", "Eb"],
     ["Ab", "min6", "Fb"],
     ["Ab", "maj6", "F"],
+    ["Ab", "dim7", "Gbb"],
     ["Ab", "min7", "Gb"],
     ["Ab", "maj7", "G"],
     // A tonic
@@ -202,6 +215,7 @@ describe("intervalUp() interval table", () => {
     ["A", "p5", "E"],
     ["A", "min6", "F"],
     ["A", "maj6", "F#"],
+    ["A", "dim7", "Gb"],
     ["A", "min7", "G"],
     ["A", "maj7", "G#"],
     // A# tonic
@@ -216,6 +230,7 @@ describe("intervalUp() interval table", () => {
     ["A#", "p5", "E#"],
     ["A#", "min6", "F#"],
     ["A#", "maj6", "Fx"],
+    ["A#", "dim7", "G"],
     ["A#", "min7", "G#"],
     ["A#", "maj7", "Gx"],
     // Bb tonic
@@ -230,6 +245,7 @@ describe("intervalUp() interval table", () => {
     ["Bb", "p5", "F"],
     ["Bb", "min6", "Gb"],
     ["Bb", "maj6", "G"],
+    ["Bb", "dim7", "Abb"],
     ["Bb", "min7", "Ab"],
     ["Bb", "maj7", "A"],
     // B tonic
@@ -244,6 +260,7 @@ describe("intervalUp() interval table", () => {
     ["B", "p5", "F#"],
     ["B", "min6", "G"],
     ["B", "maj6", "G#"],
+    ["B", "dim7", "Ab"],
     ["B", "min7", "A"],
     ["B", "maj7", "A#"],
   ];
