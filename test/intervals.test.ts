@@ -264,9 +264,12 @@ describe("intervalUp() interval table", () => {
     ["B", "min7", "A"],
     ["B", "maj7", "A#"],
   ];
-  test.each(cases)("%s + %s = %s", (start, interval, expected) => {
-    expect(intervalUp(start, interval)).toBe(expected);
-  });
+  test.each(cases)(
+    "%s + %s = %s",
+    (start: PitchClass, interval: IntervalName, expected: PitchClass) => {
+      expect(intervalUp(start, interval)).toBe(expected);
+    },
+  );
 });
 
 describe("intervalDown() interval table", () => {
@@ -527,7 +530,10 @@ describe("intervalDown() interval table", () => {
     ["B", "min7", "C#"],
     ["B", "maj7", "C"],
   ];
-  test.each(cases)("%s - %s = %s", (start, interval, expected) => {
-    expect(intervalDown(start, interval)).toBe(expected);
-  });
+  test.each(cases)(
+    "%s - %s = %s",
+    (start: PitchClass, interval: IntervalName, expected: PitchClass) => {
+      expect(intervalDown(start, interval)).toBe(expected);
+    },
+  );
 });

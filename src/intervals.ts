@@ -65,7 +65,9 @@ export type Note = {
 
 /** The number of semitones and letters to increment or decrement for a given interval */
 export interface IntervalSpec {
+  /** Semitone distance (half steps) */
   steps: number;
+  /** Diatonic letter distance (number of letter names spanned, e.g. C→E = 2) */
   letterSteps: number;
 }
 
@@ -218,6 +220,15 @@ export const noteSpecs: Record<PitchClass, Note> = {
   },
 };
 
+/**
+ * Reverse lookup map from `"semitone,letter"` key to pitch class.
+ * Used by `intervalUp`/`intervalDown` to resolve the target note
+ * after applying semitone and letter offsets.
+ *
+ * @example
+ * notesByPosition.get('0,0') // => 'C'
+ * notesByPosition.get('1,0') // => 'C#'
+ */
 export const notesByPosition: Map<string, PitchClass> = new Map(
   (Object.entries(noteSpecs) as [PitchClass, Note][]).map(([pc, note]) => [
     `${note.semitone},${note.letter}`,
@@ -271,6 +282,18 @@ export function intervalUp(
   return result;
 }
 
+/**
+ * Computes the pitch class a given interval below a starting note.
+ * Uses dual semitone/letter constraint for enharmonic correctness.
+ *
+ * @param start - the starting pitch class
+ * @param interval - the interval to transpose down by
+ * @returns the resulting pitch class
+ *
+ * @example
+ * intervalDown('E', 'maj3') // => 'C'
+ * intervalDown('G#', 'maj3') // => 'E'
+ */
 export function intervalDown(
   start: PitchClass,
   interval: IntervalName,
