@@ -69,7 +69,5 @@ export function makeChord(
         fifth: intervalUp(root, "dim5"),
         seventh: intervalUp(root, "dim7"),
       };
-    default:
-      return undefined;
   }
 }
