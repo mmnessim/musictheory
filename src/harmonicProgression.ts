@@ -11,7 +11,7 @@ export type HarmonicFunction =
  * Graph of harmonic functions
  */
 export const transitions: Record<HarmonicFunction, HarmonicFunction[]> = {
-  tonic: ["tonic", "tonic extension", "predominant", "dominant"],
+  tonic: ["tonic extension", "predominant", "dominant"],
   "tonic extension": ["tonic", "predominant"],
   predominant: ["predominant", "dominant"],
   dominant: ["tonic"],
