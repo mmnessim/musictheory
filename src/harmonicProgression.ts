@@ -1,7 +1,7 @@
 /**
  * Harmonic functional areas in common practice harmony
  */
-export type HarmonicFunction =
+export type FunctionalArea =
   | "tonic"
   | "tonic extension"
   | "predominant"
@@ -10,7 +10,7 @@ export type HarmonicFunction =
 /**
  * Graph of harmonic functions
  */
-export const transitions: Record<HarmonicFunction, HarmonicFunction[]> = {
+export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
   tonic: ["tonic extension", "predominant", "dominant"],
   "tonic extension": ["tonic", "predominant"],
   predominant: ["predominant", "dominant"],
@@ -22,7 +22,7 @@ export const transitions: Record<HarmonicFunction, HarmonicFunction[]> = {
  * @param current - current harmonic function
  * @returns - A random, but valid harmonic function based on the graph
  */
-export function nextFunction(current: HarmonicFunction): HarmonicFunction {
+export function nextFunction(current: FunctionalArea): FunctionalArea {
   const options = transitions[current];
   return options[Math.floor(Math.random() * options.length)]!;
 }
@@ -35,9 +35,9 @@ export function nextFunction(current: HarmonicFunction): HarmonicFunction {
  * @returns Generator that can be incremented to get progressions
  */
 export function* walkProgressions(
-  current: HarmonicFunction = "tonic",
+  current: FunctionalArea = "tonic",
   maxDepth: number = 6,
-): Generator<HarmonicFunction[]> {
+): Generator<FunctionalArea[]> {
   if (current === "dominant") {
     yield [current, "tonic"];
     return;
@@ -53,14 +53,14 @@ export function* walkProgressions(
 /**
  * Lazily loaded list of progressions. Conditionally intialized by getProgressions()
  */
-export let allProgressions: HarmonicFunction[][] | null = null;
+export let allProgressions: FunctionalArea[][] | null = null;
 
 /**
  * Loads allProgressions if needed
  *
  * @returns all valid progressions
  */
-export function getProgressions(): HarmonicFunction[][] {
+export function getProgressions(): FunctionalArea[][] {
   if (!allProgressions) {
     allProgressions = [...walkProgressions("tonic")];
   }
@@ -72,7 +72,7 @@ export function getProgressions(): HarmonicFunction[][] {
  *
  * @returns One random valid progression
  */
-export function randomProgression(): HarmonicFunction[] {
+export function randomProgression(): FunctionalArea[] {
   const all = getProgressions();
   return all[Math.floor(Math.random() * all.length)]!;
 }

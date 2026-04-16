@@ -3,13 +3,13 @@ import {
   getProgressions,
   randomProgression,
   transitions,
-  type HarmonicFunction,
+  type FunctionalArea,
   nextFunction,
   walkProgressions,
 } from "../src/harmonicProgression";
 
 describe("nextFunction() returns a valid option", () => {
-  const cases: [HarmonicFunction, HarmonicFunction[]][] = [
+  const cases: [FunctionalArea, FunctionalArea[]][] = [
     ["tonic", ["tonic extension", "predominant", "dominant"]],
     ["tonic extension", ["tonic", "predominant"]],
     ["predominant", ["predominant", "dominant"]],
