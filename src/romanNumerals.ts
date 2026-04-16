@@ -1,6 +1,7 @@
 import type { ChordType } from "./chords";
 import type { FunctionalArea } from "./harmonicProgression";
 
+/** Raw roman numerals for each scale degree. Does not represent chord quality */
 export type ScaleNumeral = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII";
 export type Mode = "major" | "natural minor" | "harmonic minor";
 
@@ -9,6 +10,7 @@ export type NumeralChords = {
   chordTypes: ChordType;
 };
 
+/** Lookup table of roman numerals based on functional area */
 export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   tonic: ["I"],
   "tonic extension": ["III", "VI"],
@@ -16,6 +18,7 @@ export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   dominant: ["V", "VII"],
 };
 
+/** Lookup table of major key chords by roman numeral */
 export const majorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["major"],
   II: ["minor"],
@@ -26,6 +29,7 @@ export const majorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["dim", "halfDim7"],
 };
 
+/** Lookup table of minor key chords by roman numeral for natural minor */
 export const natMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["minor"],
   II: ["dim"],
@@ -36,6 +40,7 @@ export const natMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["major"],
 };
 
+/** Lookup table of minor key chords by roman numeral for harmonic minor */
 export const harmMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["minor"],
   II: ["dim"],
@@ -46,12 +51,19 @@ export const harmMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["dim", "halfDim7"],
 };
 
+/** Helper lookup table to dispatch correct mode */
 export const modeChords: Record<Mode, Record<ScaleNumeral, ChordType[]>> = {
   major: majorKeyChords,
   "natural minor": natMinorKeyChords,
   "harmonic minor": harmMinorKeyChords,
 };
 
+/**
+ * Translates a progression to a series of valid roman numerals.
+ * @param progression progression of functional areas
+ * @param mode option of major, natural minor, or harmonic minor
+ * @returns array of NumeralChords (roman numerals)
+ */
 export function progressionToRomanNumerals(
   progression: FunctionalArea[],
   mode: Mode,
