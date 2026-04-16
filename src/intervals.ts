@@ -256,6 +256,12 @@ export const intervalSpecs: Record<IntervalName, IntervalSpec> = {
   maj7: { steps: 11, letterSteps: 6 },
 };
 
+export const intervalsByPosition: Map<string, IntervalName> = new Map(
+  (Object.entries(intervalSpecs) as [IntervalName, IntervalSpec][]).map(
+    ([name, spec]) => [`${spec.steps},${spec.letterSteps}`, name],
+  ),
+);
+
 /**
  * Computes the pitch class a given interval above a starting note.
  * Uses dual semitone/letter constraint for enharmonic correctness.
@@ -309,4 +315,22 @@ export function intervalDown(
   if (!result)
     throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
   return result;
+}
+
+export type IntervalDirection = "up" | "down";
+
+export function intervalBetween(
+  start: PitchClass,
+  end: PitchClass,
+  direction: IntervalDirection = "up",
+): IntervalName | undefined {
+  const steps =
+    direction === "up"
+      ? (noteSpecs[end].semitone - noteSpecs[start].semitone + 12) % 12
+      : (noteSpecs[start].semitone - noteSpecs[end].semitone + 12) % 12;
+  const letterSteps =
+    direction === "up"
+      ? (noteSpecs[end].letter - noteSpecs[start].letter + 7) % 7
+      : (noteSpecs[start].letter - noteSpecs[end].letter + 7) % 7;
+  return intervalsByPosition.get(`${steps},${letterSteps}`);
 }
