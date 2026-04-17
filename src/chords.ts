@@ -96,6 +96,14 @@ export function makeChord(chordType: ChordType, root: PitchClass): Chord {
   }
 }
 
+/**
+ * Chord inversions.
+ *
+ * Root position is root in bass
+ * First inversion is third in bass
+ * Second inversion is fifth in bass
+ * Third inversion is only possible for seventh chords and has the seventh in bass
+ */
 export type Inversion = "root" | "first" | "second" | "third";
 
 export function voiceChord(
@@ -110,18 +118,30 @@ export function voiceChord(
   const seventh: Pitch | undefined = chord.seventh
     ? intervalUpPitch(root, seventhInt!)
     : undefined;
-  return {
-    chord: chord,
-    inversion: inversion,
-    notes: [
-      inversion === "root" ? root : octaveUp(root),
-      inversion === "first" ? third : octaveUp(third),
-      inversion === "second" ? fifth : octaveUp(fifth),
-      ...(seventh
-        ? inversion === "third"
-          ? [seventh]
-          : [octaveUp(seventh)]
-        : []),
-    ],
-  };
+  switch (inversion) {
+    case "root":
+      return {
+        chord: chord,
+        inversion: inversion,
+        notes: [root, third, fifth, ...(seventh ? [seventh] : [])],
+      };
+    case "first":
+      return {
+        chord: chord,
+        inversion: inversion,
+        notes: [third, fifth, ...(seventh ? [seventh] : []), octaveUp(root)],
+      };
+    case "second":
+      return {
+        chord: chord,
+        inversion: inversion,
+        notes: [
+          fifth,
+          ...(seventh ? [seventh] : []),
+          octaveUp(root),
+          octaveUp(third),
+        ],
+      };
+    case "third":
+  }
 }

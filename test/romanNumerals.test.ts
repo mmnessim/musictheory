@@ -53,7 +53,7 @@ describe("progressionToRomanNumerals()", () => {
     for (const mode of ALL_MODES) {
       for (let i = 0; i < 200; i++) {
         const result = progressionToRomanNumerals(progression, mode);
-        result.forEach(({ degree, chordTypes }) => {
+        result.forEach(({ degree, chordType: chordTypes }) => {
           const validTypes = modeChords[mode][degree];
           expect(validTypes).toContain(chordTypes);
         });
@@ -71,7 +71,7 @@ describe("progressionToRomanNumerals()", () => {
     const seen = new Set(
       Array.from({ length: 100 }, () =>
         progressionToRomanNumerals(progression, "major")
-          .map((n) => `${n.degree}:${n.chordTypes}`)
+          .map((n) => `${n.degree}:${n.chordType}`)
           .join(","),
       ),
     );
@@ -92,9 +92,7 @@ describe("progressionToRomanNumerals()", () => {
           const [result] = progressionToRomanNumerals([area], mode);
           expect(result).toBeDefined();
           expect(areaNumerals[area]).toContain(result!.degree);
-          expect(modeChords[mode][result!.degree]).toContain(
-            result!.chordTypes,
-          );
+          expect(modeChords[mode][result!.degree]).toContain(result!.chordType);
         }
       }
     }

@@ -1,5 +1,6 @@
-import type { ChordType } from "./chords";
-import type { FunctionalArea } from "./harmonicProgression";
+import { makeChord, type Chord, type ChordType } from "./chords";
+import { randomProgression, type FunctionalArea } from "./harmonicProgression";
+import { makeScale, type PitchClass } from "./intervals";
 
 /** Raw roman numerals for each scale degree. Does not represent chord quality */
 export type ScaleNumeral = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII";
@@ -7,7 +8,7 @@ export type Mode = "major" | "natural minor" | "harmonic minor";
 
 export type NumeralChords = {
   degree: ScaleNumeral;
-  chordTypes: ChordType;
+  chordType: ChordType;
 };
 
 /** Lookup table of roman numerals based on functional area */
@@ -74,7 +75,43 @@ export function progressionToRomanNumerals(
     const chordTypes = modeChords[mode][degree];
     return {
       degree,
-      chordTypes: chordTypes[Math.floor(Math.random() * chordTypes.length)]!,
+      chordType: chordTypes[Math.floor(Math.random() * chordTypes.length)]!,
     };
   });
+}
+
+/**
+ * Returns a random progression of roman numerals
+ * @param mode
+ * @returns
+ */
+export function randomRomanNumeralProgression(mode: Mode): NumeralChords[] {
+  const p = randomProgression();
+  return progressionToRomanNumerals(p, mode);
+}
+
+/**
+ * Returns a random chord progression
+ * @param root
+ * @param mode
+ * @returns
+ */
+export function randomChordProgression(root: PitchClass, mode: Mode): Chord[] {
+  const numerals: NumeralChords[] = randomRomanNumeralProgression(mode);
+  const scale = makeScale(root, mode);
+  console.log(scale);
+  const chords: Chord[] = [];
+  const noteMap: Record<ScaleNumeral, PitchClass> = {
+    I: scale[0]!,
+    II: scale[1]!,
+    III: scale[2]!,
+    IV: scale[3]!,
+    V: scale[4]!,
+    VI: scale[5]!,
+    VII: scale[6]!,
+  };
+  for (const num of numerals) {
+    chords.push(makeChord(num.chordType, noteMap[num.degree]));
+  }
+  return chords;
 }

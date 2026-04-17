@@ -1,4 +1,5 @@
 import type { Octave, Pitch } from "./pitch";
+import type { Mode } from "./romanNumerals";
 
 /** All chromatic pitch classes excluding double sharps and double flats */
 export type PitchClass =
@@ -259,6 +260,56 @@ export const intervalSpecs: Record<IntervalName, IntervalSpec> = {
   maj7: { steps: 11, letterSteps: 6 },
   octave: { steps: 12, letterSteps: 7 },
 };
+
+export const majorIntervals: IntervalName[] = [
+  "unison",
+  "maj2",
+  "maj3",
+  "p4",
+  "p5",
+  "maj6",
+  "maj7",
+];
+
+export const natMinorIntervals: IntervalName[] = [
+  "unison",
+  "maj2",
+  "min3",
+  "p4",
+  "p5",
+  "min6",
+  "min7",
+];
+
+export const harmMinorIntervals: IntervalName[] = [
+  "unison",
+  "maj2",
+  "min3",
+  "p4",
+  "p5",
+  "min6",
+  "maj7",
+];
+
+export function scaleIntervals(mode: Mode): IntervalName[] {
+  switch (mode) {
+    case "major":
+      return majorIntervals;
+    case "natural minor":
+      return natMinorIntervals;
+    case "harmonic minor":
+      return harmMinorIntervals;
+  }
+}
+
+export function makeScale(root: PitchClass, mode: Mode): PitchClass[] {
+  const intervals = scaleIntervals(mode);
+  const scale: PitchClass[] = [];
+  for (const int of intervals) {
+    scale.push(intervalUp(root, int));
+  }
+  return scale;
+}
 
 export const intervalsByPosition: Map<string, IntervalName> = new Map(
   (Object.entries(intervalSpecs) as [IntervalName, IntervalSpec][]).map(
