@@ -6,6 +6,7 @@ import {
   type PitchClass,
   intervalBetween,
   intervalUpPitch,
+  intervalDownPitch,
 } from "../src";
 import type { Pitch } from "../src/pitch";
 
@@ -876,6 +877,34 @@ describe("intervalUpPitch()", () => {
     "%s -> %s = %s",
     (start: Pitch, interval: IntervalName, expected: Pitch) => {
       expect(intervalUpPitch(start, interval)).toEqual(expected);
+    },
+  );
+});
+
+describe("intervalDownPitch()", () => {
+  const cases: [Pitch, IntervalName, Pitch][] = [
+    // C tonic - stays in same octave
+    [{ pitchClass: "C", octave: 4 }, "unison", { pitchClass: "C", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "maj3", { pitchClass: "Ab", octave: 3 }],
+    [{ pitchClass: "C", octave: 4 }, "p4", { pitchClass: "G", octave: 3 }],
+    [{ pitchClass: "C", octave: 4 }, "maj7", { pitchClass: "Db", octave: 3 }],
+    [{ pitchClass: "C", octave: 4 }, "octave", { pitchClass: "C", octave: 3 }],
+    // C tonic - stays in same octave
+    [{ pitchClass: "C", octave: 4 }, "min2", { pitchClass: "B", octave: 3 }],
+    // B tonic - most intervals stay in same octave going down
+    [{ pitchClass: "B", octave: 4 }, "unison", { pitchClass: "B", octave: 4 }],
+    [{ pitchClass: "B", octave: 4 }, "min2", { pitchClass: "A#", octave: 4 }],
+    [{ pitchClass: "B", octave: 4 }, "maj7", { pitchClass: "C", octave: 4 }],
+    [{ pitchClass: "B", octave: 4 }, "octave", { pitchClass: "B", octave: 3 }],
+    // octave 0 clamps
+    [{ pitchClass: "C", octave: 0 }, "min2", { pitchClass: "B", octave: 0 }],
+    [{ pitchClass: "C", octave: 0 }, "octave", { pitchClass: "C", octave: 0 }],
+  ];
+
+  test.each(cases)(
+    "%s -> %s = %s",
+    (start: Pitch, interval: IntervalName, expected: Pitch) => {
+      expect(intervalDownPitch(start, interval)).toEqual(expected);
     },
   );
 });

@@ -309,10 +309,12 @@ export function intervalDownPitch(start: Pitch, interval: IntervalName): Pitch {
   const startNote = noteSpecs[start.pitchClass];
   const end = intervalDown(start.pitchClass, interval);
   const endNote = noteSpecs[end];
-  const wrapped = endNote.letter > startNote.letter;
+  const spec = intervalSpecs[interval];
+  const octavesDown = Math.floor(spec.letterSteps / 7);
+  const wrapped = endNote.letter > startNote.letter ? 1 : 0;
   return {
     pitchClass: end,
-    octave: clampOctave(start.octave - (wrapped ? 1 : 0)),
+    octave: clampOctave(start.octave - octavesDown - wrapped),
   };
 }
 
