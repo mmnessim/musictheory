@@ -305,7 +305,7 @@ export function intervalUpPitch(start: Pitch, interval: IntervalName): Pitch {
   };
 }
 
-export function intervaDownpPitch(start: Pitch, interval: IntervalName): Pitch {
+export function intervalDownPitch(start: Pitch, interval: IntervalName): Pitch {
   const startNote = noteSpecs[start.pitchClass];
   const end = intervalDown(start.pitchClass, interval);
   const endNote = noteSpecs[end];

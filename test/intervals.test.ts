@@ -857,6 +857,19 @@ describe("intervalUpPitch()", () => {
     [{ pitchClass: "C", octave: 4 }, "min7", { pitchClass: "Bb", octave: 4 }],
     [{ pitchClass: "C", octave: 4 }, "maj7", { pitchClass: "B", octave: 4 }],
     [{ pitchClass: "C", octave: 4 }, "octave", { pitchClass: "C", octave: 5 }],
+    // B tonic - most intervals cross the octave boundary
+    [{ pitchClass: "B", octave: 4 }, "unison", { pitchClass: "B", octave: 4 }],
+    [{ pitchClass: "B", octave: 4 }, "min2", { pitchClass: "C", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "maj2", { pitchClass: "C#", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "min3", { pitchClass: "D", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "maj3", { pitchClass: "D#", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "p4", { pitchClass: "E", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "p5", { pitchClass: "F#", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "maj7", { pitchClass: "A#", octave: 5 }],
+    [{ pitchClass: "B", octave: 4 }, "octave", { pitchClass: "B", octave: 5 }],
+    // octave 7 clamps
+    [{ pitchClass: "B", octave: 7 }, "min2", { pitchClass: "C", octave: 7 }],
+    [{ pitchClass: "C", octave: 7 }, "octave", { pitchClass: "C", octave: 7 }],
   ];
 
   test.each(cases)(
