@@ -1,3 +1,5 @@
+import type { Octave, Pitch } from "./pitch";
+
 /** All chromatic pitch classes excluding double sharps and double flats */
 export type PitchClass =
   | "Cb"
@@ -287,6 +289,31 @@ export function intervalUp(
     throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
   return result;
 }
+
+export function intervalUpPitch(start: Pitch, interval: IntervalName): Pitch {
+  const startNote = noteSpecs[start.pitchClass];
+  const end = intervalUp(start.pitchClass, interval);
+  const endNote = noteSpecs[end];
+  const wrapped = endNote.letter < startNote.letter;
+  return {
+    pitchClass: end,
+    octave: clampOctave(start.octave + (wrapped ? 1 : 0)),
+  };
+}
+
+export function intervaDownpPitch(start: Pitch, interval: IntervalName): Pitch {
+  const startNote = noteSpecs[start.pitchClass];
+  const end = intervalDown(start.pitchClass, interval);
+  const endNote = noteSpecs[end];
+  const wrapped = endNote.letter > startNote.letter;
+  return {
+    pitchClass: end,
+    octave: clampOctave(start.octave - (wrapped ? 1 : 0)),
+  };
+}
+
+const clampOctave = (n: number): Octave =>
+  Math.min(7, Math.max(0, n)) as Octave;
 
 /**
  * Computes the pitch class a given interval below a starting note.
