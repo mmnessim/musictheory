@@ -5,7 +5,9 @@ import {
   type IntervalName,
   type PitchClass,
   intervalBetween,
+  intervalUpPitch,
 } from "../src";
+import type { Pitch } from "../src/pitch";
 
 describe("intervalUp() interval table", () => {
   const cases: [PitchClass, IntervalName, PitchClass][] = [
@@ -24,6 +26,8 @@ describe("intervalUp() interval table", () => {
     ["C", "dim7", "Bbb"],
     ["C", "min7", "Bb"],
     ["C", "maj7", "B"],
+    ["C", "octave", "C"],
+
     // C# tonic
     ["C#", "unison", "C#"],
     ["C#", "min2", "D"],
@@ -39,6 +43,7 @@ describe("intervalUp() interval table", () => {
     ["C#", "dim7", "Bb"],
     ["C#", "min7", "B"],
     ["C#", "maj7", "B#"],
+    ["C#", "octave", "C#"],
     // Db tonic
     ["Db", "unison", "Db"],
     ["Db", "min2", "Ebb"],
@@ -54,6 +59,7 @@ describe("intervalUp() interval table", () => {
     ["Db", "dim7", "Cbb"],
     ["Db", "min7", "Cb"],
     ["Db", "maj7", "C"],
+    ["Db", "octave", "Db"],
     // D tonic
     ["D", "unison", "D"],
     ["D", "min2", "Eb"],
@@ -69,6 +75,7 @@ describe("intervalUp() interval table", () => {
     ["D", "dim7", "Cb"],
     ["D", "min7", "C"],
     ["D", "maj7", "C#"],
+    ["D", "octave", "D"],
     // D# tonic
     ["D#", "unison", "D#"],
     ["D#", "min2", "E"],
@@ -84,6 +91,7 @@ describe("intervalUp() interval table", () => {
     ["D#", "dim7", "C"],
     ["D#", "min7", "C#"],
     ["D#", "maj7", "Cx"],
+    ["D#", "octave", "D#"],
     // Eb tonic
     ["Eb", "unison", "Eb"],
     ["Eb", "min2", "Fb"],
@@ -99,6 +107,7 @@ describe("intervalUp() interval table", () => {
     ["Eb", "dim7", "Dbb"],
     ["Eb", "min7", "Db"],
     ["Eb", "maj7", "D"],
+    ["Eb", "octave", "Eb"],
     // E tonic
     ["E", "unison", "E"],
     ["E", "min2", "F"],
@@ -114,6 +123,7 @@ describe("intervalUp() interval table", () => {
     ["E", "dim7", "Db"],
     ["E", "min7", "D"],
     ["E", "maj7", "D#"],
+    ["E", "octave", "E"],
     // F tonic
     ["F", "unison", "F"],
     ["F", "min2", "Gb"],
@@ -129,6 +139,7 @@ describe("intervalUp() interval table", () => {
     ["F", "dim7", "Ebb"],
     ["F", "min7", "Eb"],
     ["F", "maj7", "E"],
+    ["F", "octave", "F"],
     // F# tonic
     ["F#", "unison", "F#"],
     ["F#", "min2", "G"],
@@ -144,6 +155,7 @@ describe("intervalUp() interval table", () => {
     ["F#", "dim7", "Eb"],
     ["F#", "min7", "E"],
     ["F#", "maj7", "E#"],
+    ["F#", "octave", "F#"],
     // Gb tonic
     ["Gb", "unison", "Gb"],
     ["Gb", "min2", "Abb"],
@@ -159,6 +171,7 @@ describe("intervalUp() interval table", () => {
     ["Gb", "dim7", "Fbb"],
     ["Gb", "min7", "Fb"],
     ["Gb", "maj7", "F"],
+    ["Gb", "octave", "Gb"],
     // G tonic
     ["G", "unison", "G"],
     ["G", "min2", "Ab"],
@@ -174,6 +187,7 @@ describe("intervalUp() interval table", () => {
     ["G", "dim7", "Fb"],
     ["G", "min7", "F"],
     ["G", "maj7", "F#"],
+    ["G", "octave", "G"],
     // G# tonic
     ["G#", "unison", "G#"],
     ["G#", "min2", "A"],
@@ -189,6 +203,7 @@ describe("intervalUp() interval table", () => {
     ["G#", "dim7", "F"],
     ["G#", "min7", "F#"],
     ["G#", "maj7", "Fx"],
+    ["G#", "octave", "G#"],
     // Ab tonic
     ["Ab", "unison", "Ab"],
     ["Ab", "min2", "Bbb"],
@@ -204,6 +219,7 @@ describe("intervalUp() interval table", () => {
     ["Ab", "dim7", "Gbb"],
     ["Ab", "min7", "Gb"],
     ["Ab", "maj7", "G"],
+    ["Ab", "octave", "Ab"],
     // A tonic
     ["A", "unison", "A"],
     ["A", "min2", "Bb"],
@@ -219,6 +235,7 @@ describe("intervalUp() interval table", () => {
     ["A", "dim7", "Gb"],
     ["A", "min7", "G"],
     ["A", "maj7", "G#"],
+    ["A", "octave", "A"],
     // A# tonic
     ["A#", "unison", "A#"],
     ["A#", "min2", "B"],
@@ -234,6 +251,7 @@ describe("intervalUp() interval table", () => {
     ["A#", "dim7", "G"],
     ["A#", "min7", "G#"],
     ["A#", "maj7", "Gx"],
+    ["A#", "octave", "A#"],
     // Bb tonic
     ["Bb", "unison", "Bb"],
     ["Bb", "min2", "Cb"],
@@ -249,6 +267,7 @@ describe("intervalUp() interval table", () => {
     ["Bb", "dim7", "Abb"],
     ["Bb", "min7", "Ab"],
     ["Bb", "maj7", "A"],
+    ["Bb", "octave", "Bb"],
     // B tonic
     ["B", "unison", "B"],
     ["B", "min2", "C"],
@@ -264,6 +283,7 @@ describe("intervalUp() interval table", () => {
     ["B", "dim7", "Ab"],
     ["B", "min7", "A"],
     ["B", "maj7", "A#"],
+    ["B", "octave", "B"],
   ];
   test.each(cases)(
     "%s + %s = %s",
@@ -290,6 +310,7 @@ describe("intervalDown() interval table", () => {
     ["C", "dim7", "D#"],
     ["C", "min7", "D"],
     ["C", "maj7", "Db"],
+    ["C", "octave", "C"],
     // C# tonic
     ["C#", "unison", "C#"],
     ["C#", "min2", "B#"],
@@ -305,6 +326,7 @@ describe("intervalDown() interval table", () => {
     ["C#", "dim7", "Dx"],
     ["C#", "min7", "D#"],
     ["C#", "maj7", "D"],
+    ["C#", "octave", "C#"],
     // Db tonic
     ["Db", "unison", "Db"],
     ["Db", "min2", "C"],
@@ -320,6 +342,7 @@ describe("intervalDown() interval table", () => {
     ["Db", "dim7", "E"],
     ["Db", "min7", "Eb"],
     ["Db", "maj7", "Ebb"],
+    ["Db", "octave", "Db"],
     // D tonic
     ["D", "unison", "D"],
     ["D", "min2", "C#"],
@@ -335,6 +358,7 @@ describe("intervalDown() interval table", () => {
     ["D", "dim7", "E#"],
     ["D", "min7", "E"],
     ["D", "maj7", "Eb"],
+    ["D", "octave", "D"],
     // D# tonic
     ["D#", "unison", "D#"],
     ["D#", "min2", "Cx"],
@@ -350,6 +374,7 @@ describe("intervalDown() interval table", () => {
     ["D#", "dim7", "Ex"],
     ["D#", "min7", "E#"],
     ["D#", "maj7", "E"],
+    ["D#", "octave", "D#"],
     // Eb tonic
     ["Eb", "unison", "Eb"],
     ["Eb", "min2", "D"],
@@ -365,6 +390,7 @@ describe("intervalDown() interval table", () => {
     ["Eb", "dim7", "F#"],
     ["Eb", "min7", "F"],
     ["Eb", "maj7", "Fb"],
+    ["Eb", "octave", "Eb"],
     // E tonic
     ["E", "unison", "E"],
     ["E", "min2", "D#"],
@@ -380,6 +406,7 @@ describe("intervalDown() interval table", () => {
     ["E", "dim7", "Fx"],
     ["E", "min7", "F#"],
     ["E", "maj7", "F"],
+    ["E", "octave", "E"],
     // F tonic
     ["F", "unison", "F"],
     ["F", "min2", "E"],
@@ -395,6 +422,7 @@ describe("intervalDown() interval table", () => {
     ["F", "dim7", "G#"],
     ["F", "min7", "G"],
     ["F", "maj7", "Gb"],
+    ["F", "octave", "F"],
     // F# tonic
     ["F#", "unison", "F#"],
     ["F#", "min2", "E#"],
@@ -410,6 +438,7 @@ describe("intervalDown() interval table", () => {
     ["F#", "dim7", "Gx"],
     ["F#", "min7", "G#"],
     ["F#", "maj7", "G"],
+    ["F#", "octave", "F#"],
     // Gb tonic
     ["Gb", "unison", "Gb"],
     ["Gb", "min2", "F"],
@@ -425,6 +454,7 @@ describe("intervalDown() interval table", () => {
     ["Gb", "dim7", "A"],
     ["Gb", "min7", "Ab"],
     ["Gb", "maj7", "Abb"],
+    ["Gb", "octave", "Gb"],
     // G tonic
     ["G", "unison", "G"],
     ["G", "min2", "F#"],
@@ -440,6 +470,7 @@ describe("intervalDown() interval table", () => {
     ["G", "dim7", "A#"],
     ["G", "min7", "A"],
     ["G", "maj7", "Ab"],
+    ["G", "octave", "G"],
     // G# tonic
     ["G#", "unison", "G#"],
     ["G#", "min2", "Fx"],
@@ -455,6 +486,7 @@ describe("intervalDown() interval table", () => {
     ["G#", "dim7", "Ax"],
     ["G#", "min7", "A#"],
     ["G#", "maj7", "A"],
+    ["G#", "octave", "G#"],
     // Ab tonic
     ["Ab", "unison", "Ab"],
     ["Ab", "min2", "G"],
@@ -470,6 +502,7 @@ describe("intervalDown() interval table", () => {
     ["Ab", "dim7", "B"],
     ["Ab", "min7", "Bb"],
     ["Ab", "maj7", "Bbb"],
+    ["Ab", "octave", "Ab"],
     // A tonic
     ["A", "unison", "A"],
     ["A", "min2", "G#"],
@@ -485,6 +518,7 @@ describe("intervalDown() interval table", () => {
     ["A", "dim7", "B#"],
     ["A", "min7", "B"],
     ["A", "maj7", "Bb"],
+    ["A", "octave", "A"],
     // A# tonic
     ["A#", "unison", "A#"],
     ["A#", "min2", "Gx"],
@@ -500,6 +534,7 @@ describe("intervalDown() interval table", () => {
     ["A#", "dim7", "Bx"],
     ["A#", "min7", "B#"],
     ["A#", "maj7", "B"],
+    ["A#", "octave", "A#"],
     // Bb tonic
     ["Bb", "unison", "Bb"],
     ["Bb", "min2", "A"],
@@ -515,6 +550,7 @@ describe("intervalDown() interval table", () => {
     ["Bb", "dim7", "C#"],
     ["Bb", "min7", "C"],
     ["Bb", "maj7", "Cb"],
+    ["Bb", "octave", "Bb"],
     // B tonic
     ["B", "unison", "B"],
     ["B", "min2", "A#"],
@@ -530,6 +566,7 @@ describe("intervalDown() interval table", () => {
     ["B", "dim7", "Cx"],
     ["B", "min7", "C#"],
     ["B", "maj7", "C"],
+    ["B", "octave", "B"],
   ];
   test.each(cases)(
     "%s - %s = %s",
@@ -800,6 +837,32 @@ describe("intervalBetween() correctly finds ascending intervals", () => {
     "%s -> %s = %s",
     (start: PitchClass, end: PitchClass, expected: IntervalName) => {
       expect(intervalBetween(start, end, "up")).toBe(expected);
+    },
+  );
+});
+
+describe("intervalUpPitch()", () => {
+  const cases: [Pitch, IntervalName, Pitch][] = [
+    [{ pitchClass: "C", octave: 4 }, "unison", { pitchClass: "C", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "min2", { pitchClass: "Db", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "maj2", { pitchClass: "D", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "min3", { pitchClass: "Eb", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "maj3", { pitchClass: "E", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "p4", { pitchClass: "F", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "aug4", { pitchClass: "F#", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "dim5", { pitchClass: "Gb", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "p5", { pitchClass: "G", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "min6", { pitchClass: "Ab", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "maj6", { pitchClass: "A", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "min7", { pitchClass: "Bb", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "maj7", { pitchClass: "B", octave: 4 }],
+    [{ pitchClass: "C", octave: 4 }, "octave", { pitchClass: "C", octave: 5 }],
+  ];
+
+  test.each(cases)(
+    "%s -> %s = %s",
+    (start: Pitch, interval: IntervalName, expected: Pitch) => {
+      expect(intervalUpPitch(start, interval)).toEqual(expected);
     },
   );
 });

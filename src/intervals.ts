@@ -55,7 +55,8 @@ export type IntervalName =
   | "maj6"
   | "dim7"
   | "min7"
-  | "maj7";
+  | "maj7"
+  | "octave";
 
 /** The chromatic position (semitones starting at 0) and letter position of each note */
 export type Note = {
@@ -256,6 +257,7 @@ export const intervalSpecs: Record<IntervalName, IntervalSpec> = {
   dim7: { steps: 9, letterSteps: 6 },
   min7: { steps: 10, letterSteps: 6 },
   maj7: { steps: 11, letterSteps: 6 },
+  octave: { steps: 12, letterSteps: 7 },
 };
 
 export const intervalsByPosition: Map<string, IntervalName> = new Map(
@@ -294,10 +296,12 @@ export function intervalUpPitch(start: Pitch, interval: IntervalName): Pitch {
   const startNote = noteSpecs[start.pitchClass];
   const end = intervalUp(start.pitchClass, interval);
   const endNote = noteSpecs[end];
-  const wrapped = endNote.letter < startNote.letter;
+  const spec = intervalSpecs[interval];
+  const octavesUp = Math.floor(spec.letterSteps / 7);
+  const wrapped = endNote.letter < startNote.letter ? 1 : 0;
   return {
     pitchClass: end,
-    octave: clampOctave(start.octave + (wrapped ? 1 : 0)),
+    octave: clampOctave(start.octave + octavesUp + wrapped),
   };
 }
 
