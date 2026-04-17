@@ -1,4 +1,5 @@
-import { intervalUp, type PitchClass } from "./intervals";
+import { intervalUp, type IntervalName, type PitchClass } from "./intervals";
+import type { Pitch } from "./pitch";
 
 export type Chord = {
   chordType: ChordType;
@@ -6,6 +7,14 @@ export type Chord = {
   third: PitchClass;
   fifth: PitchClass;
   seventh?: PitchClass;
+};
+
+export type VoicedChord = {
+  chordType: ChordType;
+  root: Pitch;
+  third: Pitch;
+  fifth: Pitch;
+  seventh?: Pitch;
 };
 
 export type ChordType =
@@ -16,10 +25,22 @@ export type ChordType =
   | "halfDim7"
   | "fullDim7";
 
-export function makeChord(
-  chordType: ChordType,
-  root: PitchClass,
-): Chord | undefined {
+export const chordIntervalSpecs: Record<ChordType, IntervalName[]> = {
+  major: ["maj3", "p5"],
+  minor: ["min3", "p5"],
+  dim: ["min3", "dim5"],
+  dom7: ["maj3", "p5", "min7"],
+  halfDim7: ["min3", "dim5", "min7"],
+  fullDim7: ["min3", "dim5", "dim7"],
+};
+
+/**
+ * Creates a chord of pitch classes
+ * @param chordType
+ * @param root
+ * @returns A chord
+ */
+export function makeChord(chordType: ChordType, root: PitchClass): Chord {
   switch (chordType) {
     case "major":
       return {
