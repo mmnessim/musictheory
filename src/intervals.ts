@@ -318,7 +318,7 @@ export function intervalDownPitch(start: Pitch, interval: IntervalName): Pitch {
   };
 }
 
-const clampOctave = (n: number): Octave =>
+export const clampOctave = (n: number): Octave =>
   Math.min(7, Math.max(0, n)) as Octave;
 
 /**

@@ -1,5 +1,10 @@
-import { intervalUp, type IntervalName, type PitchClass } from "./intervals";
-import type { Pitch } from "./pitch";
+import {
+  intervalUp,
+  intervalUpPitch,
+  type IntervalName,
+  type PitchClass,
+} from "./intervals";
+import { octaveUp, type Octave, type Pitch } from "./pitch";
 
 export type Chord = {
   chordType: ChordType;
@@ -10,11 +15,9 @@ export type Chord = {
 };
 
 export type VoicedChord = {
-  chordType: ChordType;
-  root: Pitch;
-  third: Pitch;
-  fifth: Pitch;
-  seventh?: Pitch;
+  chord: Chord;
+  inversion: Inversion;
+  notes: Pitch[];
 };
 
 export type ChordType =
@@ -91,4 +94,85 @@ export function makeChord(chordType: ChordType, root: PitchClass): Chord {
         seventh: intervalUp(root, "dim7"),
       };
   }
+}
+
+export type Inversion = "root" | "first" | "second" | "third";
+export type Position = "open" | "closed";
+
+export function rootPositionChord(
+  chord: Chord,
+  octave: Octave,
+  position: Position = "closed",
+): VoicedChord | undefined {
+  const intervals = chordIntervalSpecs[chord.chordType];
+  if (!intervals) return undefined;
+  const root: Pitch = { pitchClass: chord.root, octave: octave };
+  let result: VoicedChord = {
+    chord: chord,
+    inversion: "root",
+    notes: [
+      root,
+      intervalUpPitch(root, intervals[0]!),
+      intervalUpPitch(root, intervals[1]!),
+      ...(chord.seventh && intervals.length > 2
+        ? [intervalUpPitch(root, intervals[2]!)]
+        : []),
+    ],
+  };
+  if (position === "open") {
+    result.notes[1] = intervalUpPitch(result.notes[1]!, "octave");
+  }
+  return result;
+}
+
+export function firstInversionChord(
+  chord: Chord,
+  octave: Octave,
+  position: Position = "closed",
+): VoicedChord | undefined {
+  const intervals = chordIntervalSpecs[chord.chordType];
+  if (!intervals) return undefined;
+  const root: Pitch = { pitchClass: chord.root, octave: octave };
+  let result: VoicedChord = {
+    chord: chord,
+    inversion: "first",
+    notes: [
+      octaveUp(root),
+      intervalUpPitch(root, intervals[0]!),
+      intervalUpPitch(root, intervals[1]!),
+      ...(chord.seventh && intervals.length > 2
+        ? [intervalUpPitch(root, intervals[2]!)]
+        : []),
+    ],
+  };
+  if (position === "open") {
+    result.notes[2] = octaveUp(result.notes[2]!);
+  }
+  return result;
+}
+
+export function secondInversionChord(
+  chord: Chord,
+  octave: Octave,
+  position: Position = "closed",
+): VoicedChord | undefined {
+  const intervals = chordIntervalSpecs[chord.chordType];
+  if (!intervals) return undefined;
+  const root: Pitch = { pitchClass: chord.root, octave: octave };
+  let result: VoicedChord = {
+    chord: chord,
+    inversion: "second",
+    notes: [
+      octaveUp(root),
+      octaveUp(intervalUpPitch(root, intervals[0]!)),
+      intervalUpPitch(root, intervals[1]!),
+      ...(chord.seventh && intervals.length > 2
+        ? [intervalUpPitch(root, intervals[2]!)]
+        : []),
+    ],
+  };
+  if (position === "open") {
+    result.notes[1] = octaveUp(result.notes[1]!);
+  }
+  return result;
 }
