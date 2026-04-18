@@ -19,7 +19,7 @@ describe("nextFunction() returns a valid option", () => {
     ["tonic", ["tonic extension", "predominant", "dominant"]],
     ["tonic extension", ["predominant"]],
     ["predominant", ["predominant", "dominant"]],
-    ["dominant", ["tonic"]],
+    ["dominant", ["cadence"]],
   ];
 
   test.each(cases)(
@@ -32,11 +32,11 @@ describe("nextFunction() returns a valid option", () => {
   );
 });
 
-describe("walkProgressions() returns progressions ending in dominant -> tonic", () => {
-  test("all progressions end in dominant -> tonic", () => {
+describe("walkProgressions() returns progressions ending in dominant -> cadence", () => {
+  test("all progressions end in dominant -> cadence", () => {
     for (const progression of walkProgressions()) {
       expect(progression.at(-2)).toBe("dominant");
-      expect(progression.at(-1)).toBe("tonic");
+      expect(progression.at(-1)).toBe("cadence");
     }
   });
 });
@@ -64,10 +64,10 @@ describe("getProgressions()", () => {
     expect(first).toBe(second); // reference equality, not deep equality
   });
 
-  test("every progression ends in dominant -> tonic", () => {
+  test("every progression ends in dominant -> cadence", () => {
     for (const progression of getProgressions()) {
       expect(progression.at(-2)).toBe("dominant");
-      expect(progression.at(-1)).toBe("tonic");
+      expect(progression.at(-1)).toBe("cadence");
     }
   });
 });
@@ -79,10 +79,10 @@ describe("randomProgression()", () => {
     expect(result.length).toBeGreaterThanOrEqual(3);
   });
 
-  test("ends in dominant -> tonic", () => {
+  test("ends in dominant -> cadence", () => {
     const result = randomProgression();
     expect(result.at(-2)).toBe("dominant");
-    expect(result.at(-1)).toBe("tonic");
+    expect(result.at(-1)).toBe("cadence");
   });
 
   test("starts with tonic", () => {

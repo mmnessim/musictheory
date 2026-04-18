@@ -1,3 +1,11 @@
+import {
+  allCadences,
+  authenticCadence,
+  deceptiveCadence,
+  insertCadence,
+  plagalCadence,
+  type Cadence,
+} from "./cadences";
 import { type ChordType } from "./chords";
 import { type FunctionalArea } from "./harmonicProgression";
 
@@ -16,6 +24,7 @@ export const tonicNumerals: ScaleNumeral[] = ["I"];
 export const tonicExtNumerals: ScaleNumeral[] = ["III"];
 export const predominantNumerals: ScaleNumeral[] = ["II", "IV", "VI"];
 export const dominantNumerals: ScaleNumeral[] = ["V", "VII"];
+export const cadenceNumerals: ScaleNumeral[] = [];
 
 /** Lookup table of roman numerals based on functional area */
 export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
@@ -23,6 +32,7 @@ export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   "tonic extension": tonicExtNumerals,
   predominant: predominantNumerals,
   dominant: dominantNumerals,
+  cadence: cadenceNumerals,
 };
 
 /** Lookup table of major key chords by roman numeral */
@@ -75,7 +85,12 @@ export function progressionToRomanNumerals(
   progression: FunctionalArea[],
   mode: Mode,
 ): NumeralChords[] {
-  const result = progression.map((p) => {
+  const result = progression.flatMap((p) => {
+    if (p === "cadence") {
+      const randomCadence =
+        allCadences[Math.floor(Math.random() * allCadences.length)]!;
+      return insertCadence(randomCadence, mode);
+    }
     const options = areaNumerals[p];
     const degree = options[Math.floor(Math.random() * options.length)]!;
     const chordTypes = modeChords[mode][degree];

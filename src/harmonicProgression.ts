@@ -14,7 +14,8 @@ export type FunctionalArea =
   | "tonic"
   | "tonic extension"
   | "predominant"
-  | "dominant";
+  | "dominant"
+  | "cadence";
 
 export type ChordProgression = {
   root: PitchClass;
@@ -33,7 +34,8 @@ export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
   tonic: ["tonic extension", "predominant", "dominant"],
   "tonic extension": ["predominant"],
   predominant: ["predominant", "dominant"],
-  dominant: ["tonic"],
+  dominant: ["cadence"],
+  cadence: [],
 };
 
 /**
@@ -57,8 +59,8 @@ export function* walkProgressions(
   current: FunctionalArea = "tonic",
   maxDepth: number = 6,
 ): Generator<FunctionalArea[]> {
-  if (current === "dominant") {
-    yield [current, "tonic"];
+  if (current === "cadence") {
+    yield [current];
     return;
   }
   if (maxDepth === 0) return;
