@@ -1,4 +1,6 @@
 # @mmnessim/music-theory
+[![npm](https://img.shields.io/npm/v/@mmnessim/music-theory)](https://www.npmjs.com/package/@mmnessim/music-theory)
+<!-- [![npm downloads](https://img.shields.io/npm/dm/@mmnessim/music-theory)](https://www.npmjs.com/package/@mmnessim/music-theory)   -->                                              
 
 Music theory primitives for TypeScript: pitches, intervals, scales, chords, and harmonic progressions.
 
