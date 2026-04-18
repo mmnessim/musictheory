@@ -7,6 +7,9 @@ import {
   intervalBetween,
   intervalUpPitch,
   intervalDownPitch,
+  makeScale,
+  scaleIntervals,
+  clampOctave,
 } from "../src";
 import type { Pitch } from "../src/pitch";
 
@@ -907,4 +910,124 @@ describe("intervalDownPitch()", () => {
       expect(intervalDownPitch(start, interval)).toEqual(expected);
     },
   );
+});
+
+describe("intervalBetween() descending direction", () => {
+  const cases: [PitchClass, PitchClass, IntervalName][] = [
+    ["C", "C", "unison"],
+    ["C", "B", "min2"],
+    ["C", "Bb", "maj2"],
+    ["C", "A", "min3"],
+    ["C", "Ab", "maj3"],
+    ["C", "G", "p4"],
+    ["C", "Gb", "aug4"],
+    ["C", "F#", "dim5"],
+    ["C", "F", "p5"],
+    ["C", "E", "min6"],
+    ["C", "Eb", "maj6"],
+    ["C", "D#", "dim7"],
+    ["C", "D", "min7"],
+    ["C", "Db", "maj7"],
+    // G tonic
+    ["G", "G", "unison"],
+    ["G", "F#", "min2"],
+    ["G", "F", "maj2"],
+    ["G", "E", "min3"],
+    ["G", "Eb", "maj3"],
+    ["G", "D", "p4"],
+    ["G", "C", "p5"],
+    ["G", "B", "min6"],
+    ["G", "Bb", "maj6"],
+    // Bb tonic
+    ["Bb", "Bb", "unison"],
+    ["Bb", "A", "min2"],
+    ["Bb", "Ab", "maj2"],
+    ["Bb", "G", "min3"],
+    ["Bb", "Gb", "maj3"],
+    ["Bb", "F", "p4"],
+    ["Bb", "Eb", "p5"],
+  ];
+
+  test.each(cases)(
+    "%s -> %s = %s (down)",
+    (start: PitchClass, end: PitchClass, expected: IntervalName) => {
+      expect(intervalBetween(start, end, "down")).toBe(expected);
+    },
+  );
+});
+
+test("intervalBetween() returns undefined for enharmonically ambiguous pair", () => {
+  // C -> C# ascending has no standard interval (would need aug1), so undefined
+  expect(intervalBetween("C", "C#", "up")).toBeUndefined();
+});
+
+describe("clampOctave()", () => {
+  test("returns value unchanged when in range", () => {
+    expect(clampOctave(0)).toBe(0);
+    expect(clampOctave(4)).toBe(4);
+    expect(clampOctave(7)).toBe(7);
+  });
+
+  test("clamps to 0 for negative values", () => {
+    expect(clampOctave(-1)).toBe(0);
+    expect(clampOctave(-99)).toBe(0);
+  });
+
+  test("clamps to 7 for values above 7", () => {
+    expect(clampOctave(8)).toBe(7);
+    expect(clampOctave(99)).toBe(7);
+  });
+});
+
+describe("scaleIntervals()", () => {
+  test("major scale has 7 intervals starting with unison", () => {
+    const intervals = scaleIntervals("major");
+    expect(intervals).toHaveLength(7);
+    expect(intervals[0]).toBe("unison");
+  });
+
+  test("natural minor scale has 7 intervals with min3 and min6 and min7", () => {
+    const intervals = scaleIntervals("natural minor");
+    expect(intervals).toContain("min3");
+    expect(intervals).toContain("min6");
+    expect(intervals).toContain("min7");
+    expect(intervals).not.toContain("maj3");
+  });
+
+  test("harmonic minor has maj7 instead of min7", () => {
+    const intervals = scaleIntervals("harmonic minor");
+    expect(intervals).toContain("maj7");
+    expect(intervals).not.toContain("min7");
+  });
+});
+
+describe("makeScale()", () => {
+  test("C major scale", () => {
+    expect(makeScale("C", "major")).toEqual(["C", "D", "E", "F", "G", "A", "B"]);
+  });
+
+  test("G major scale has one sharp (F#)", () => {
+    expect(makeScale("G", "major")).toEqual(["G", "A", "B", "C", "D", "E", "F#"]);
+  });
+
+  test("F major scale has one flat (Bb)", () => {
+    expect(makeScale("F", "major")).toEqual(["F", "G", "A", "Bb", "C", "D", "E"]);
+  });
+
+  test("A natural minor scale", () => {
+    expect(makeScale("A", "natural minor")).toEqual(["A", "B", "C", "D", "E", "F", "G"]);
+  });
+
+  test("A harmonic minor scale has G#", () => {
+    const scale = makeScale("A", "harmonic minor");
+    expect(scale).toEqual(["A", "B", "C", "D", "E", "F", "G#"]);
+  });
+
+  test("D natural minor scale", () => {
+    expect(makeScale("D", "natural minor")).toEqual(["D", "E", "F", "G", "A", "Bb", "C"]);
+  });
+
+  test("Bb major scale", () => {
+    expect(makeScale("Bb", "major")).toEqual(["Bb", "C", "D", "Eb", "F", "G", "A"]);
+  });
 });
