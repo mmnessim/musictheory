@@ -1,11 +1,4 @@
-import {
-  allCadences,
-  authenticCadence,
-  deceptiveCadence,
-  insertCadence,
-  plagalCadence,
-  type Cadence,
-} from "./cadences";
+import { allCadences, insertCadence } from "./cadences";
 import { type ChordType } from "./chords";
 import { type FunctionalArea } from "./harmonicProgression";
 
