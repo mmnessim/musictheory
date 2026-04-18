@@ -3,7 +3,7 @@ import {
   type Mode,
   type NumeralChords,
   type ScaleNumeral,
-} from "./romanNumerals";
+} from "./romanNumerals.js";
 
 export type Cadence = ScaleNumeral[];
 

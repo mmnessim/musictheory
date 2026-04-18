@@ -1,6 +1,6 @@
-import { allCadences, insertCadence } from "./cadences";
-import { type ChordType } from "./chords";
-import { type FunctionalArea } from "./harmonicProgression";
+import { allCadences, insertCadence } from "./cadences.js";
+import { type ChordType } from "./chords.js";
+import { type FunctionalArea } from "./harmonicProgression.js";
 
 /** Raw roman numerals for each scale degree. Does not represent chord quality */
 // export type RomanNumeral = ScaleNumeral | SecondaryNumeral;
@@ -84,7 +84,7 @@ export function progressionToRomanNumerals(
         allCadences[Math.floor(Math.random() * allCadences.length)]!;
       return insertCadence(randomCadence, mode);
     }
-    const options = areaNumerals[p];
+    const options = areaNumerals[p as Exclude<FunctionalArea, "cadence">];
     const degree = options[Math.floor(Math.random() * options.length)]!;
     const chordTypes = modeChords[mode][degree];
     return {

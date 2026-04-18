@@ -444,8 +444,19 @@ describe("voiceChord()", () => {
   });
 
   describe("third inversion", () => {
-    test("returns undefined (not implemented)", () => {
-      expect(voiceChord(gDom7, 4, "third")).toBeUndefined();
+    test("returns undefined for a triad (no seventh)", () => {
+      expect(voiceChord(cMajor, 4, "third")).toBeUndefined();
+    });
+
+    test("G dom7 third inversion at octave 3 has seventh in bass", () => {
+      const voiced = voiceChord(gDom7, 3, "third");
+      expect(voiced?.inversion).toBe("third");
+      expect(voiced?.notes).toEqual([
+        { pitchClass: "F", octave: 4 },
+        { pitchClass: "G", octave: 4 },
+        { pitchClass: "B", octave: 4 },
+        { pitchClass: "D", octave: 5 },
+      ]);
     });
   });
 

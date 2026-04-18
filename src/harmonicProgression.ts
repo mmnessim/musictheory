@@ -1,11 +1,11 @@
-import { makeChord, secondaryDominant, type Chord } from "./chords";
-import { intervalBetween, makeScale, type PitchClass } from "./intervals";
+import { makeChord, secondaryDominant, type Chord } from "./chords.js";
+import { intervalBetween, makeScale, type PitchClass } from "./intervals.js";
 import {
   progressionToRomanNumerals,
   type Mode,
   type NumeralChords,
   type ScaleNumeral,
-} from "./romanNumerals";
+} from "./romanNumerals.js";
 
 /**
  * Harmonic functional areas in common practice harmony

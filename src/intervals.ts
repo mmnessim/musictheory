@@ -1,5 +1,5 @@
-import type { Octave, Pitch } from "./pitch";
-import type { Mode } from "./romanNumerals";
+import type { Octave, Pitch } from "./pitch.js";
+import type { Mode } from "./romanNumerals.js";
 
 /** All chromatic pitch classes excluding double sharps and double flats */
 export type PitchClass =
@@ -299,6 +299,8 @@ export function scaleIntervals(mode: Mode): IntervalName[] {
       return natMinorIntervals;
     case "harmonic minor":
       return harmMinorIntervals;
+    default:
+      throw new Error(`Unknown mode: ${mode}`);
   }
 }
 

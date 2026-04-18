@@ -1,8 +1,27 @@
 {
-  "name": "music-theory",
-  "module": "src/index.ts",
+  "name": "@mmnessim/music-theory",
+  "version": "0.1.0",
+  "description": "Music theory primitives: pitches, intervals, chords, and harmonic progressions",
+  "license": "MIT",
+  "author": "Mounir Nessim",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "import": "./src/index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "bun-types": "latest"
   }
 }

@@ -3,8 +3,8 @@ import {
   intervalUpPitch,
   type IntervalName,
   type PitchClass,
-} from "./intervals";
-import { octaveUp, type Octave, type Pitch } from "./pitch";
+} from "./intervals.js";
+import { octaveUp, type Octave, type Pitch } from "./pitch.js";
 
 export type Chord = {
   chordType: ChordType;
@@ -149,5 +149,13 @@ export function voiceChord(
         ],
       };
     case "third":
+      if (!seventh) {
+        return undefined;
+      }
+      return {
+        chord: chord,
+        inversion: inversion,
+        notes: [seventh, octaveUp(root), octaveUp(third), octaveUp(fifth)],
+      };
   }
 }
