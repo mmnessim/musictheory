@@ -45,6 +45,7 @@ export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
  */
 export function nextFunction(current: FunctionalArea): FunctionalArea {
   const options = transitions[current];
+  if (options.length === 0) return "cadence";
   return options[Math.floor(Math.random() * options.length)]!;
 }
 
@@ -74,7 +75,7 @@ export function* walkProgressions(
 /**
  * Lazily loaded list of progressions. Conditionally intialized by getProgressions()
  */
-export let allProgressions: FunctionalArea[][] | null = null;
+let allProgressions: FunctionalArea[][] | null = null;
 
 /**
  * Loads allProgressions if needed
