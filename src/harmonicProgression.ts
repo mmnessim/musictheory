@@ -1,3 +1,12 @@
+import { makeChord, secondaryDominant, type Chord } from "./chords";
+import { intervalBetween, makeScale, type PitchClass } from "./intervals";
+import {
+  progressionToRomanNumerals,
+  type Mode,
+  type NumeralChords,
+  type ScaleNumeral,
+} from "./romanNumerals";
+
 /**
  * Harmonic functional areas in common practice harmony
  */
@@ -12,7 +21,7 @@ export type FunctionalArea =
  */
 export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
   tonic: ["tonic extension", "predominant", "dominant"],
-  "tonic extension": ["tonic", "predominant"],
+  "tonic extension": ["predominant"],
   predominant: ["predominant", "dominant"],
   dominant: ["tonic"],
 };
@@ -75,4 +84,54 @@ export function getProgressions(): FunctionalArea[][] {
 export function randomProgression(): FunctionalArea[] {
   const all = getProgressions();
   return all[Math.floor(Math.random() * all.length)]!;
+}
+
+/**
+ * Returns a random progression of roman numerals
+ * @param mode
+ * @returns
+ */
+export function randomRomanNumeralProgression(mode: Mode): NumeralChords[] {
+  const p = randomProgression();
+  return progressionToRomanNumerals(p, mode);
+}
+
+/**
+ * Returns a random chord progression
+ * @param root
+ * @param mode
+ * @returns
+ */
+export function randomChordProgression(root: PitchClass, mode: Mode): Chord[] {
+  const numerals: NumeralChords[] = randomRomanNumeralProgression(mode);
+  const scale = makeScale(root, mode);
+  const chords: Chord[] = [];
+  const noteMap: Record<ScaleNumeral, PitchClass> = {
+    I: scale[0]!,
+    II: scale[1]!,
+    III: scale[2]!,
+    IV: scale[3]!,
+    V: scale[4]!,
+    VI: scale[5]!,
+    VII: scale[6]!,
+  };
+  for (const num of numerals) {
+    chords.push(makeChord(num.chordType, noteMap[num.degree]));
+  }
+  return chords;
+}
+
+export function addSecondaryDominants(progression: Chord[]): Chord[] {
+  const newProgression: Chord[] = [];
+  const root = progression[0]?.root;
+  for (const c of progression) {
+    if (intervalBetween(root!, c.root, "up") === "maj2") {
+      newProgression.push(...secondaryDominant(c));
+    } else if (intervalBetween(root!, c.root, "up") === "p4") {
+      newProgression.push(...secondaryDominant(c));
+    } else {
+      newProgression.push(c);
+    }
+  }
+  return newProgression;
 }

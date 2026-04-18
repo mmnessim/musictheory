@@ -96,6 +96,12 @@ export function makeChord(chordType: ChordType, root: PitchClass): Chord {
   }
 }
 
+export function secondaryDominant(chord: Chord): Chord[] {
+  if (["dim", "halfDim7", "fullDim7"].includes(chord.chordType)) return [chord];
+  const root = intervalUp(chord.root, "p5");
+  return [makeChord("dom7", root), chord];
+}
+
 /**
  * Chord inversions.
  *
