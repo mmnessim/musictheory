@@ -12,12 +12,17 @@ export type NumeralChords = {
   chordType: ChordType;
 };
 
+export const tonicNumerals: ScaleNumeral[] = ["I"];
+export const tonicExtNumerals: ScaleNumeral[] = ["III"];
+export const predominantNumerals: ScaleNumeral[] = ["II", "IV", "VI"];
+export const dominantNumerals: ScaleNumeral[] = ["V", "VII"];
+
 /** Lookup table of roman numerals based on functional area */
 export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
-  tonic: ["I"],
-  "tonic extension": ["III"],
-  predominant: ["II", "IV", "VI"],
-  dominant: ["V", "VII"],
+  tonic: tonicNumerals,
+  "tonic extension": tonicExtNumerals,
+  predominant: predominantNumerals,
+  dominant: dominantNumerals,
 };
 
 /** Lookup table of major key chords by roman numeral */
