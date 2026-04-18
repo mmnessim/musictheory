@@ -16,6 +16,16 @@ export type FunctionalArea =
   | "predominant"
   | "dominant";
 
+export type ChordProgression = {
+  root: PitchClass;
+  items: ProgressionItem[];
+};
+
+export type ProgressionItem = {
+  chord: Chord;
+  numeral: ScaleNumeral;
+};
+
 /**
  * Graph of harmonic functions
  */
@@ -102,10 +112,16 @@ export function randomRomanNumeralProgression(mode: Mode): NumeralChords[] {
  * @param mode
  * @returns
  */
-export function randomChordProgression(root: PitchClass, mode: Mode): Chord[] {
+export function randomChordProgression(
+  root: PitchClass,
+  mode: Mode,
+): ChordProgression {
   const numerals: NumeralChords[] = randomRomanNumeralProgression(mode);
   const scale = makeScale(root, mode);
-  const chords: Chord[] = [];
+  const prog: ChordProgression = {
+    root: root,
+    items: [],
+  };
   const noteMap: Record<ScaleNumeral, PitchClass> = {
     I: scale[0]!,
     II: scale[1]!,
@@ -116,9 +132,13 @@ export function randomChordProgression(root: PitchClass, mode: Mode): Chord[] {
     VII: scale[6]!,
   };
   for (const num of numerals) {
-    chords.push(makeChord(num.chordType, noteMap[num.degree]));
+    const c = makeChord(num.chordType, noteMap[num.degree]);
+    prog.items.push({
+      chord: c,
+      numeral: num.degree,
+    });
   }
-  return chords;
+  return prog;
 }
 
 export function addSecondaryDominants(progression: Chord[]): Chord[] {

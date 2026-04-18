@@ -2,7 +2,9 @@ import { type ChordType } from "./chords";
 import { type FunctionalArea } from "./harmonicProgression";
 
 /** Raw roman numerals for each scale degree. Does not represent chord quality */
+// export type RomanNumeral = ScaleNumeral | SecondaryNumeral;
 export type ScaleNumeral = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII";
+// export type SecondaryNumeral = "V/II" | "V/IV";
 export type Mode = "major" | "natural minor" | "harmonic minor";
 
 export type NumeralChords = {
@@ -13,7 +15,7 @@ export type NumeralChords = {
 /** Lookup table of roman numerals based on functional area */
 export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   tonic: ["I"],
-  "tonic extension": ["III", "VI"],
+  "tonic extension": ["III"],
   predominant: ["II", "IV", "VI"],
   dominant: ["V", "VII"],
 };

@@ -11,7 +11,7 @@ import {
 describe("nextFunction() returns a valid option", () => {
   const cases: [FunctionalArea, FunctionalArea[]][] = [
     ["tonic", ["tonic extension", "predominant", "dominant"]],
-    ["tonic extension", ["tonic", "predominant"]],
+    ["tonic extension", ["predominant"]],
     ["predominant", ["predominant", "dominant"]],
     ["dominant", ["tonic"]],
   ];
