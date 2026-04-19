@@ -1,6 +1,6 @@
 {
   "name": "@mmnessim/music-theory",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Music theory primitives: pitches, intervals, chords, and harmonic progressions",
   "license": "MIT",
   "author": "Mounir Nessim",

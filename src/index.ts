@@ -4,3 +4,4 @@ export * from "./harmonicProgression.js";
 export * from "./romanNumerals.js";
 export * from "./pitch.js";
 export * from "./cadences.js";
+export * from "./abcjs/abcNotation.js";

@@ -1,6 +1,6 @@
-import type { VoicedChord } from "../chords";
-import type { PitchClass } from "../intervals";
-import type { Octave, Pitch } from "../pitch";
+import type { VoicedChord } from "../chords.js";
+import type { PitchClass } from "../intervals.js";
+import type { Octave, Pitch } from "../pitch.js";
 
 /**
  * Lookup table of abcjs notation for octaves 0-7
@@ -50,7 +50,6 @@ export function pitchClassToAbc(p: PitchClass): string {
 export function voicedChordToAbc(vc: VoicedChord): string {
   let notesString = "";
   for (const n of vc.notes) {
-    console.log(n);
     notesString += pitchToAbc(n);
   }
   return `[${notesString}]`;
