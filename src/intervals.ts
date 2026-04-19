@@ -59,6 +59,26 @@ export type IntervalName =
   | "maj7"
   | "octave";
 
+export const RootPitchClasses: PitchClass[] = [
+  "C",
+  "C#",
+  "Db",
+  "D",
+  "D#",
+  "Eb",
+  "E",
+  "F",
+  "F#",
+  "Gb",
+  "G",
+  "G#",
+  "Ab",
+  "A",
+  "A#",
+  "Bb",
+  "B",
+];
+
 /** The chromatic position (semitones starting at 0) and letter position of each note */
 export type Note = {
   /** Chromatic position 0-11, C = 0 */
