@@ -63,6 +63,11 @@ type AbcHeaderOptions = {
   tempo?: number;
 };
 
+/**
+ * Sets required and optional header fields for abcjs documents
+ * @param options
+ * @returns abcjs string
+ */
 export function abcHeader({
   title,
   key = "C",
