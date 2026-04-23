@@ -6,6 +6,9 @@ import {
 } from "./intervals.js";
 import { octaveUp, type Octave, type Pitch } from "./pitch.js";
 
+/**
+ * Represents a basic chord structure without specific voicing.
+ */
 export type Chord = {
   chordType: ChordType;
   root: PitchClass;
@@ -14,12 +17,18 @@ export type Chord = {
   seventh?: PitchClass;
 };
 
+/**
+ * Represents a voiced chord with specific pitches and an inversion.
+ */
 export type VoicedChord = {
   chord: Chord;
   inversion: Inversion;
   notes: Pitch[];
 };
 
+/**
+ * Supported chord qualities.
+ */
 export type ChordType =
   | "major"
   | "minor"
@@ -28,6 +37,9 @@ export type ChordType =
   | "halfDim7"
   | "fullDim7";
 
+/**
+ * Mapping of chord types to their constituent intervals relative to the root.
+ */
 export const chordIntervalSpecs: Record<ChordType, IntervalName[]> = {
   major: ["maj3", "p5"],
   minor: ["min3", "p5"],
@@ -38,10 +50,10 @@ export const chordIntervalSpecs: Record<ChordType, IntervalName[]> = {
 };
 
 /**
- * Creates a chord of pitch classes
- * @param chordType
- * @param root
- * @returns A chord
+ * Creates a chord structure based on a root pitch class and a chord type.
+ * @param chordType The quality of the chord.
+ * @param root The root note of the chord.
+ * @returns A Chord object containing the calculated pitch classes.
  */
 export function makeChord(chordType: ChordType, root: PitchClass): Chord {
   switch (chordType) {
@@ -96,6 +108,12 @@ export function makeChord(chordType: ChordType, root: PitchClass): Chord {
   }
 }
 
+/**
+ * Generates a secondary dominant chord sequence for a given chord.
+ * @param chord The target chord.
+ * @returns An array containing the secondary dominant (V7 of the target) followed by the target chord itself.
+ * Returns only the original chord if it is diminished.
+ */
 export function secondaryDominant(chord: Chord): Chord[] {
   if (["dim", "halfDim7", "fullDim7"].includes(chord.chordType)) return [chord];
   const root = intervalUp(chord.root, "p5");
@@ -104,14 +122,20 @@ export function secondaryDominant(chord: Chord): Chord[] {
 
 /**
  * Chord inversions.
- *
- * Root position is root in bass
- * First inversion is third in bass
- * Second inversion is fifth in bass
- * Third inversion is only possible for seventh chords and has the seventh in bass
+ * - root: Root in the bass.
+ * - first: Third in the bass.
+ * - second: Fifth in the bass.
+ * - third: Seventh in the bass (only for seventh chords).
  */
 export type Inversion = "root" | "first" | "second" | "third";
 
+/**
+ * Applies a specific voicing (octave and inversion) to a chord structure.
+ * @param chord The chord to voice.
+ * @param octave The starting octave for the root note.
+ * @param inversion The desired inversion.
+ * @returns A VoicedChord object if the inversion is valid for the chord type, otherwise undefined.
+ */
 export function voiceChord(
   chord: Chord,
   octave: Octave,

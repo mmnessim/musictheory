@@ -2,24 +2,45 @@ import { allCadences, insertCadence } from "./cadences.js";
 import { type ChordType } from "./chords.js";
 import { type FunctionalArea } from "./harmonicProgression.js";
 
-/** Raw roman numerals for each scale degree. Does not represent chord quality */
-// export type RomanNumeral = ScaleNumeral | SecondaryNumeral;
+/**
+ * Scale numerals represented in Roman numeral notation.
+ * Used to identify degrees of a scale (I-VII) regardless of the key.
+ */
 export type ScaleNumeral = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII";
-// export type SecondaryNumeral = "V/II" | "V/IV";
+
+/**
+ * Supported musical modes for harmonic context.
+ */
 export type Mode = "major" | "natural minor" | "harmonic minor";
 
+/**
+ * Combines a scale degree with a chord quality to define a harmonic unit.
+ */
 export type NumeralChords = {
+  /** The Roman numeral degree of the chord */
   degree: ScaleNumeral;
+  /** The quality of the chord (e.g., "major", "minor") */
   chordType: ChordType;
 };
 
+/** Scale degrees typically used in a tonic function. */
 export const tonicNumerals: ScaleNumeral[] = ["I"];
+
+/** Scale degrees used for extending the tonic area. */
 export const tonicExtNumerals: ScaleNumeral[] = ["III"];
+
+/** Scale degrees typically used in a predominant function. */
 export const predominantNumerals: ScaleNumeral[] = ["II", "IV", "VI"];
+
+/** Scale degrees typically used in a dominant function. */
 export const dominantNumerals: ScaleNumeral[] = ["V", "VII"];
+
+/** Scale degrees reserved for specific cadence patterns (initially empty). */
 export const cadenceNumerals: ScaleNumeral[] = [];
 
-/** Lookup table of roman numerals based on functional area */
+/**
+ * Maps harmonic functional areas to their corresponding scale numerals.
+ */
 export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   tonic: tonicNumerals,
   "tonic extension": tonicExtNumerals,
@@ -28,7 +49,9 @@ export const areaNumerals: Record<FunctionalArea, ScaleNumeral[]> = {
   cadence: cadenceNumerals,
 };
 
-/** Lookup table of major key chords by roman numeral */
+/**
+ * Diatonic chord qualities for each degree in a Major key.
+ */
 export const majorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["major"],
   II: ["minor"],
@@ -39,7 +62,9 @@ export const majorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["dim", "halfDim7"],
 };
 
-/** Lookup table of minor key chords by roman numeral for natural minor */
+/**
+ * Diatonic chord qualities for each degree in a Natural Minor key.
+ */
 export const natMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["minor"],
   II: ["dim"],
@@ -50,7 +75,9 @@ export const natMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["major"],
 };
 
-/** Lookup table of minor key chords by roman numeral for harmonic minor */
+/**
+ * Diatonic chord qualities for each degree in a Harmonic Minor key.
+ */
 export const harmMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   I: ["minor"],
   II: ["dim"],
@@ -61,7 +88,9 @@ export const harmMinorKeyChords: Record<ScaleNumeral, ChordType[]> = {
   VII: ["dim", "halfDim7"],
 };
 
-/** Helper lookup table to dispatch correct mode */
+/**
+ * Dispatches the correct diatonic chord lookup table based on the mode.
+ */
 export const modeChords: Record<Mode, Record<ScaleNumeral, ChordType[]>> = {
   major: majorKeyChords,
   "natural minor": natMinorKeyChords,
@@ -69,10 +98,11 @@ export const modeChords: Record<Mode, Record<ScaleNumeral, ChordType[]>> = {
 };
 
 /**
- * Translates a progression to a series of valid roman numerals.
- * @param progression progression of functional areas
- * @param mode option of major, natural minor, or harmonic minor
- * @returns array of NumeralChords (roman numerals)
+ * Translates a sequence of functional areas into specific Roman numeral chords.
+ * Handles the special "cadence" function by selecting from predefined cadence patterns.
+ * @param progression An array of functional areas (e.g., ["tonic", "dominant", "tonic"]).
+ * @param mode The musical mode to use for chord quality lookup.
+ * @returns An array of NumeralChords representing the progression.
  */
 export function progressionToRomanNumerals(
   progression: FunctionalArea[],

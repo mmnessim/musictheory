@@ -8,7 +8,12 @@ import {
 } from "./romanNumerals.js";
 
 /**
- * Harmonic functional areas in common practice harmony
+ * Harmonic functional areas in common practice harmony.
+ * - tonic: Stability, resolution (I, III, VI).
+ * - tonic extension: Expands the tonic area (III, VI).
+ * - predominant: Leads to the dominant (II, IV, VI).
+ * - dominant: Tension, leads to the tonic (V, VII).
+ * - cadence: A concluding sequence.
  */
 export type FunctionalArea =
   | "tonic"
@@ -17,18 +22,25 @@ export type FunctionalArea =
   | "dominant"
   | "cadence";
 
+/**
+ * Represents a complete chord progression tied to a specific root key.
+ */
 export type ChordProgression = {
   root: PitchClass;
   items: ProgressionItem[];
 };
 
+/**
+ * A single item in a chord progression.
+ */
 export type ProgressionItem = {
   chord: Chord;
   numeral: ScaleNumeral;
 };
 
 /**
- * Graph of harmonic functions
+ * State machine graph of harmonic functional transitions.
+ * Defines which functional areas can follow another in common practice harmony.
  */
 export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
   tonic: ["tonic extension", "predominant", "dominant"],
@@ -39,9 +51,9 @@ export const transitions: Record<FunctionalArea, FunctionalArea[]> = {
 };
 
 /**
- *
- * @param current - current harmonic function
- * @returns - A random, but valid harmonic function based on the graph
+ * Selects a random next harmonic function based on the transitions graph.
+ * @param current The current harmonic function.
+ * @returns A random, valid subsequent harmonic function.
  */
 export function nextFunction(current: FunctionalArea): FunctionalArea {
   const options = transitions[current];
@@ -50,11 +62,10 @@ export function nextFunction(current: FunctionalArea): FunctionalArea {
 }
 
 /**
- * Generator function to recursively walk the graph and create valid functions
- *
- * @param current - Starting point of the progression
- * @param maxDepth - Prevents infinite recursion, default value of 8
- * @returns Generator that can be incremented to get progressions
+ * Generator function that yields valid sequences of harmonic functions by walking the transitions graph.
+ * @param current Starting point of the progression.
+ * @param maxDepth Prevents infinite recursion, limiting the length of the generated sequences.
+ * @yields An array of FunctionalArea representing a valid harmonic progression.
  */
 export function* walkProgressions(
   current: FunctionalArea = "tonic",
@@ -73,14 +84,13 @@ export function* walkProgressions(
 }
 
 /**
- * Lazily loaded list of progressions. Conditionally intialized by getProgressions()
+ * Cached list of all valid progressions generated from the transitions graph.
  */
 let allProgressions: FunctionalArea[][] | null = null;
 
 /**
- * Loads allProgressions if needed
- *
- * @returns all valid progressions
+ * Retrieves all valid harmonic progressions, initializing the cache if necessary.
+ * @returns A 2D array of functional areas.
  */
 export function getProgressions(): FunctionalArea[][] {
   if (!allProgressions) {
@@ -90,9 +100,8 @@ export function getProgressions(): FunctionalArea[][] {
 }
 
 /**
- * Loads progressions if needed then returns one random progression
- *
- * @returns One random valid progression
+ * Selects a random progression from the set of all valid progressions.
+ * @returns A single random harmonic progression.
  */
 export function randomProgression(): FunctionalArea[] {
   const all = getProgressions();
@@ -100,9 +109,9 @@ export function randomProgression(): FunctionalArea[] {
 }
 
 /**
- * Returns a random progression of roman numerals
- * @param mode
- * @returns
+ * Generates a random progression of roman numerals based on functional harmony.
+ * @param mode The musical mode (major, natural minor, harmonic minor).
+ * @returns An array of NumeralChords.
  */
 export function randomRomanNumeralProgression(mode: Mode): NumeralChords[] {
   const p = randomProgression();
@@ -110,10 +119,10 @@ export function randomRomanNumeralProgression(mode: Mode): NumeralChords[] {
 }
 
 /**
- * Returns a random chord progression
- * @param root
- * @param mode
- * @returns
+ * Generates a random chord progression in a specific key and mode.
+ * @param root The root pitch class of the key.
+ * @param mode The musical mode.
+ * @returns A complete ChordProgression object.
  */
 export function randomChordProgression(
   root: PitchClass,
@@ -144,6 +153,12 @@ export function randomChordProgression(
   return prog;
 }
 
+/**
+ * Enhances a progression by inserting secondary dominant chords where appropriate.
+ * Currently targets chords that are a major second or perfect fourth above the root.
+ * @param progression An array of Chord structures.
+ * @returns A new array of chords with secondary dominants inserted.
+ */
 export function addSecondaryDominants(progression: Chord[]): Chord[] {
   const newProgression: Chord[] = [];
   const root = progression[0]?.root;
