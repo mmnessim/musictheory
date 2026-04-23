@@ -1,4 +1,5 @@
 # @mmnessim/music-theory
+[![CI](https://github.com/mmnessim/musictheory/actions/workflows/ci.yml/badge.svg)](https://github.com/mmnessim/musictheory/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@mmnessim/music-theory)](https://www.npmjs.com/package/@mmnessim/music-theory)
 [![npm downloads](https://img.shields.io/npm/dm/@mmnessim/music-theory)](https://www.npmjs.com/package/@mmnessim/music-theory)                                               
 
