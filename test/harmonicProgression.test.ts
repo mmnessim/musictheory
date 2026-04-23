@@ -13,6 +13,7 @@ import {
 import { makeChord } from "../src/chords";
 import { modeChords, areaNumerals } from "../src/romanNumerals";
 import type { Mode } from "../src/romanNumerals";
+import type { PitchClass } from "../src";
 
 describe("nextFunction() returns a valid option", () => {
   const cases: [FunctionalArea, FunctionalArea[]][] = [
@@ -155,14 +156,20 @@ describe("randomChordProgression()", () => {
 
   test("each item numeral matches the chord root degree in the scale", () => {
     const numeralToIndex: Record<string, number> = {
-      I: 0, II: 1, III: 2, IV: 3, V: 4, VI: 5, VII: 6,
+      I: 0,
+      II: 1,
+      III: 2,
+      IV: 3,
+      V: 4,
+      VI: 5,
+      VII: 6,
     };
     for (let i = 0; i < 10; i++) {
       const prog = randomChordProgression("C", "major");
-      const cMajorScale = ["C", "D", "E", "F", "G", "A", "B"];
+      const cMajorScale: PitchClass[] = ["C", "D", "E", "F", "G", "A", "B"];
       for (const item of prog.items) {
         const idx = numeralToIndex[item.numeral]!;
-        expect(item.chord.root).toBe(cMajorScale[idx]);
+        expect(item.chord.root).toBe(cMajorScale[idx]!);
       }
     }
   });
@@ -206,7 +213,7 @@ describe("addSecondaryDominants()", () => {
 
   test("leaves chords not a maj2 or p4 above root unchanged", () => {
     const cMaj = makeChord("major", "C");
-    const gMaj = makeChord("major", "G");  // p5 above C — no secondary dominant
+    const gMaj = makeChord("major", "G"); // p5 above C — no secondary dominant
     const result = addSecondaryDominants([cMaj, gMaj]);
     expect(result).toEqual([cMaj, gMaj]);
   });
