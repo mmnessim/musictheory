@@ -364,7 +364,18 @@ export function intervalUp(
     throw new Error(`No pitch class found for ${JSON.stringify(end)}`);
   return result;
 }
-
+/**
+ * Computes the Pitch (PitchClass and Octave) above a starting pitch.
+ * Similar to intervalUp() but with Octave specification. Octaves are between
+ * 0 and 7. Octave wraps at C (B3 is a half step below C4)
+ * @param start
+ * @param interval
+ * @returns Pitch
+ *
+ * @example
+ * intervalUpPitch({ pitchClass: "C", octave: 4}, "maj3") => { pitchClass: "E", octave: 4 }
+ * intervalUpPitch({ pitchClass: "B", octave: 3}, "p5") => { pitchClass: "F#", octave: 4 }
+ */
 export function intervalUpPitch(start: Pitch, interval: IntervalName): Pitch {
   const startNote = noteSpecs[start.pitchClass];
   const end = intervalUp(start.pitchClass, interval);
@@ -378,6 +389,18 @@ export function intervalUpPitch(start: Pitch, interval: IntervalName): Pitch {
   };
 }
 
+/**
+ * Computes the Pitch (PitchClass and Octave) below a starting pitch.
+ * Similar to intervalDown() but with Octave specification. Octaves are between
+ * 0 and 7. Octave wraps at C (B3 is a half step below C4)
+ * @param start
+ * @param interval
+ * @returns Pitch
+ *
+ * @example
+ * intervalDownPitch({ pitchClass: "C", octave: 4 }, "maj3") => { pitchClass: "Ab", octave: 3 }
+ * intervalDownPitch({ pitchClass: "B", octave: 3 }, "maj3") => { pitchClass: "E", octave: 3 }
+ */
 export function intervalDownPitch(start: Pitch, interval: IntervalName): Pitch {
   const startNote = noteSpecs[start.pitchClass];
   const end = intervalDown(start.pitchClass, interval);
