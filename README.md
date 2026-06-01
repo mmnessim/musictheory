@@ -160,9 +160,41 @@ insertCadence(plagalCadence, "major");
 //    ]
 ```
 
+## Generating abcjs Notation
+
+[abcjs](https://www.abcjs.net/) is a robust open source library for rendering music notation, as well as MIDI playback. It is not a dependency of this library, but this library is able to generate abcjs notation.
+```typescript
+import { voiceChord, type VoicedChord } from "./chords";
+import { randomChordProgression } from "./harmonicProgression";
+import { abcHeader, voicedChordToAbc } from "./abcjs/abcNotation";
+
+const prog = randomChordProgression("C", "major");
+
+// Voice each chord in root position at octave 4
+const voicedChords: VoicedChord[] = prog.items
+  .map((item) => voiceChord(item.chord, 4))
+  .filter((vc): vc is VoicedChord => vc !== undefined);
+
+// Build abcjs notation
+const header = abcHeader({ title: "Random Progression", key: "C" });
+const body = voicedChords.map(voicedChordToAbc).join(" ");
+const abcNotation = `${header}\n${body}`;
+
+console.log(abcNotation);
+//
+// X:1
+// T:Random Progression
+// M:4/4
+// Q:120
+// K:C clef=treble
+// [CEG] [GBD'] [CEG] [FAC'] [CEG]
+//
+```
+
 ## Roadmap
 
-- **abcjs notation export** — render chords and progressions as ABC notation strings for use with [abcjs](https://www.abcjs.net/)
+- ~~**abcjs notation export** — render chords and progressions as ABC notation strings for use with [abcjs](https://www.abcjs.net/)~~ DONE
+- **Keys and scales** - types and modeling of key signatures and scales
 - **Richer progressions** — secondary dominants, borrowed chords (modal mixture), and extended progression graph options
 - **Non-diatonic scales** — octatonic (diminished), whole-tone, and pentatonic scale support
 

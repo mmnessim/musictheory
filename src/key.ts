@@ -59,7 +59,3 @@ export function getKeyFromSignature(
       };
   }
 }
-
-// export function getKeyFromRoot(root: PitchClass, mode: Mode): KeySignature {
-//
-// }
